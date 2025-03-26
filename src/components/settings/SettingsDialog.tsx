@@ -1,6 +1,12 @@
-
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -58,8 +64,8 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             <div className="flex items-start gap-2 mt-2 text-sm text-muted-foreground">
               <InfoIcon size={16} className="mt-0.5 shrink-0" />
               <p>
-                Your API key is stored locally in your browser and never sent to our servers.
-                Get your API key from the{" "}
+                Your API key is stored locally in your browser and never sent to
+                our servers. Get your API key from the{" "}
                 <a
                   href="https://platform.openai.com/api-keys"
                   target="_blank"
@@ -75,9 +81,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
             {!hasApiKey && apiKey === "" && (
               <div className="flex items-start gap-2 mt-2 p-2 bg-destructive/10 rounded-md text-sm text-destructive">
                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
-                <p>
-                  An API key is required to use the ChatGPT functionality.
-                </p>
+                <p>An API key is required to use the ChatGPT functionality.</p>
               </div>
             )}
           </div>

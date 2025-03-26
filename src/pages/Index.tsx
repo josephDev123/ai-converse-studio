@@ -1,8 +1,14 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Settings, Plus, RefreshCw, BookOpen, MessageCircle, Send } from "lucide-react";
+import {
+  Settings,
+  Plus,
+  RefreshCw,
+  BookOpen,
+  MessageCircle,
+  Send,
+} from "lucide-react";
 import { ChatProvider, useChat } from "@/context/ChatContext";
 import MessageItem from "@/components/chat/MessageItem";
 import ChatInput from "@/components/chat/ChatInput";
@@ -12,7 +18,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { formatDistanceToNow } from "date-fns";
 
 const ChatInterface = () => {
-  const { messages, isLoading, sendMessage, hasApiKey, clearMessages } = useChat();
+  const { messages, isLoading, sendMessage, hasApiKey, clearMessages } =
+    useChat();
   const [showSettings, setShowSettings] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -38,7 +45,7 @@ const ChatInterface = () => {
       setShowSettings(true);
       return;
     }
-    
+
     await sendMessage(content);
   };
 
@@ -56,7 +63,7 @@ const ChatInterface = () => {
           <MessageCircle className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-medium">ChatGPT SDK Practice</h1>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -83,13 +90,17 @@ const ChatInterface = () => {
           <div className="flex flex-col items-center justify-center h-full text-center px-6 py-16">
             <div className="glass-panel p-8 max-w-lg animate-fade-in">
               <BookOpen className="h-12 w-12 text-primary mx-auto mb-6" />
-              <h2 className="text-2xl font-semibold mb-3">Welcome to ChatGPT SDK Practice</h2>
+              <h2 className="text-2xl font-semibold mb-3">
+                Welcome to ChatGPT SDK Practice
+              </h2>
               <p className="text-muted-foreground mb-6">
-                This is a simple interface to practice using the ChatGPT API. Start by configuring your API key in the settings, then send a message to begin chatting.
+                This is a simple interface to practice using the ChatGPT API.
+                Start by configuring your API key in the settings, then send a
+                message to begin chatting.
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => setShowSettings(true)}
                   className="flex items-center gap-2"
                 >
@@ -97,7 +108,9 @@ const ChatInterface = () => {
                   Configure API Key
                 </Button>
                 <Button
-                  onClick={() => handleSendMessage("Hello! Can you introduce yourself?")}
+                  onClick={() =>
+                    handleSendMessage("Hello! Can you introduce yourself?")
+                  }
                   className="flex items-center gap-2"
                   disabled={!hasApiKey}
                 >
@@ -113,12 +126,14 @@ const ChatInterface = () => {
               key={message.id}
               message={message.content}
               isUser={message.role === "user"}
-              timestamp={formatDistanceToNow(message.createdAt, { addSuffix: true })}
+              timestamp={formatDistanceToNow(message.createdAt, {
+                addSuffix: true,
+              })}
               status={message.status}
             />
           ))
         )}
-        
+
         {isLoading && (
           <div className="flex items-start gap-3">
             <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
@@ -129,7 +144,7 @@ const ChatInterface = () => {
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -138,11 +153,13 @@ const ChatInterface = () => {
         <ChatInput
           onSendMessage={handleSendMessage}
           isLoading={isLoading}
-          placeholder={hasApiKey ? "Type a message..." : "Set your API key in settings..."}
+          placeholder={
+            hasApiKey ? "Type a message..." : "Set your API key in settings..."
+          }
           className="max-w-4xl mx-auto"
         />
       </div>
-      
+
       {/* Settings Dialog */}
       <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
     </div>
