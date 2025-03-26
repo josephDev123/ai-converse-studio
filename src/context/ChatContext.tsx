@@ -18,6 +18,7 @@ interface ChatContextType {
   isLoading: boolean;
   sendMessage: (content: string) => Promise<void>;
   setApiKey: (key: string) => void;
+  isApiKey: VoidFunction;
   hasApiKey: boolean;
   clearMessages: () => void;
 }
@@ -28,12 +29,13 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  console.log(messages);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
   const sendMessage = useCallback(
     async (content: string) => {
-      if (!chatApi.isReady) {
+      if (!isApiKey()) {
         toast({
           title: "API key required",
           description: "Please enter your OpenAI API key in the settings.",
@@ -128,6 +130,16 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
     [toast]
   );
 
+  const isApiKey = useCallback(() => {
+    const apiKey = localStorage.getItem("chatgpt_api_key");
+
+    if (apiKey) {
+      chatApi.initialize(apiKey);
+      return true;
+    }
+    return false;
+  }, [toast]);
+
   const clearMessages = useCallback(() => {
     setMessages([]);
   }, []);
@@ -139,6 +151,7 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
         isLoading,
         sendMessage,
         setApiKey,
+        isApiKey,
         hasApiKey: chatApi.isReady,
         clearMessages,
       }}

@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  Suspense,
+  lazy,
+  useLayoutEffect,
+} from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,22 +20,33 @@ import { ChatProvider, useChat } from "@/context/ChatContext";
 import MessageItem from "@/components/chat/MessageItem";
 import ChatInput from "@/components/chat/ChatInput";
 import TypingIndicator from "@/components/chat/TypingIndicator";
-import SettingsDialog from "@/components/settings/SettingsDialog";
+// import SettingsDialog from "@/components/settings/SettingsDialog";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDistanceToNow } from "date-fns";
+const SettingsDialog = lazy(
+  () => import("@/components/settings/SettingsDialog")
+);
 
 const ChatInterface = () => {
-  const { messages, isLoading, sendMessage, hasApiKey, clearMessages } =
-    useChat();
+  const {
+    messages,
+    isLoading,
+    sendMessage,
+    // hasApiKey,
+    // setApiKey,
+    isApiKey,
+    clearMessages,
+  } = useChat();
+
   const [showSettings, setShowSettings] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!hasApiKey) {
+    if (!isApiKey) {
       setShowSettings(true);
     }
-  }, [hasApiKey]);
+  }, [isApiKey]);
 
   useEffect(() => {
     // Scroll to bottom when messages change
@@ -36,7 +54,7 @@ const ChatInterface = () => {
   }, [messages]);
 
   const handleSendMessage = async (content: string) => {
-    if (!hasApiKey) {
+    if (!isApiKey) {
       toast({
         title: "API key required",
         description: "Please enter your OpenAI API key in the settings.",
@@ -112,7 +130,7 @@ const ChatInterface = () => {
                     handleSendMessage("Hello! Can you introduce yourself?")
                   }
                   className="flex items-center gap-2"
-                  disabled={!hasApiKey}
+                  disabled={!isApiKey}
                 >
                   <Send className="h-4 w-4" />
                   Send Test Message
@@ -154,14 +172,16 @@ const ChatInterface = () => {
           onSendMessage={handleSendMessage}
           isLoading={isLoading}
           placeholder={
-            hasApiKey ? "Type a message..." : "Set your API key in settings..."
+            isApiKey ? "Type a message..." : "Set your API key in settings..."
           }
           className="max-w-4xl mx-auto"
         />
       </div>
 
       {/* Settings Dialog */}
-      <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
+      <Suspense>
+        <SettingsDialog open={showSettings} onOpenChange={setShowSettings} />
+      </Suspense>
     </div>
   );
 };

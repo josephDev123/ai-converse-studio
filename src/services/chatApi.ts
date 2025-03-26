@@ -44,9 +44,9 @@ class ChatApi {
       });
     }
 
-    console.log("API Key:", this.apiKey);
-    console.log("Client initialized:", !!this.client);
-    console.log("Is initialized:", this.isInitialized);
+    // console.log("API Key:", this.apiKey);
+    // console.log("Client initialized:", !!this.client);
+    // console.log("Is initialized:", this.isInitialized);
   }
 
   initialize(apiKey: string): void {
@@ -73,23 +73,31 @@ class ChatApi {
       throw new Error("ChatAPI is not initialized. Please provide an API key.");
     }
 
-    const userMessageObj: Message[] = [...userMessage, ...conversation];
+    // messages: [
+    //   { role: "system", content: "You are a helpful assistant." },
+    //   { role: "user", content: "What is the capital of France?" },
+    // ],
+
+    const imcomingConversation: Message[] = [
+      ...conversation,
+      {
+        id: Date.now().toString(),
+        content: userMessage,
+        role: "user",
+        createdAt: new Date(),
+      },
+    ];
 
     console.log(conversation);
 
     const response = await this.client.chat.completions.create({
-      // messages: [
-      //   { role: "system", content: "You are a helpful assistant." },
-      //   { role: "user", content: "What is the capital of France?" },
-      // ],
-      messages: conversation,
+      messages: imcomingConversation,
       temperature: 1.0,
       top_p: this.temperature,
       max_tokens: this.maxTokens,
       model: this.model,
     });
 
-    // console.log(response.choices[0].message.content);
     const assistantResponse = response.choices[0].message.content;
 
     const result: Message = {
