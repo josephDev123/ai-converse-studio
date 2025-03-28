@@ -65,16 +65,46 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
               : msg
           )
         );
+        let assistantMessageId = Date.now().toString(); // Unique ID for assistant message
+        let assistantResponse = "";
 
         // Send to API
         const response = await chatApi.sendMessage(
           content,
-          messages.map((m) => ({
-            id: m.id,
-            content: m.content,
-            role: m.role,
-            createdAt: m.createdAt,
-          }))
+          messages.map(
+            (m): ApiMessage => ({
+              id: m.id,
+              content: m.content,
+              role: m.role,
+              createdAt: m.createdAt,
+            })
+          ),
+          (chunk: string) => {
+            assistantResponse += chunk;
+
+            setMessages((prev) => {
+              const lastMessage = prev[prev.length - 1];
+
+              if (lastMessage && lastMessage.role === "assistant") {
+                // Append chunk to existing assistant message
+                return [
+                  ...prev.slice(0, -1),
+                  { ...lastMessage, content: lastMessage.content + chunk },
+                ];
+              } else {
+                // First chunk of assistant message
+                return [
+                  ...prev,
+                  {
+                    id: assistantMessageId,
+                    content: chunk,
+                    role: "assistant",
+                    createdAt: new Date(),
+                  } as ChatMessage,
+                ];
+              }
+            });
+          }
         );
 
         // Add response to messages

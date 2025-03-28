@@ -64,42 +64,48 @@ class ChatApi {
     return this.isInitialized;
   }
 
-  // Mock the API call with a simulated delay
   async sendMessage(
     userMessage: string,
-    conversation: Message[] = []
+    conversation: Message[] = [],
+    cb: (chunk: string) => void
   ): Promise<Message> {
     if (!this.isInitialized || !this.client) {
       throw new Error("ChatAPI is not initialized. Please provide an API key.");
     }
 
-    // messages: [
-    //   { role: "system", content: "You are a helpful assistant." },
-    //   { role: "user", content: "What is the capital of France?" },
-    // ],
-
-    const imcomingConversation: Message[] = [
-      ...conversation,
+    const imcomingConversation: {
+      role: "user" | "assistant";
+      content: string;
+    }[] = [
+      ...conversation.map((item) => ({
+        role: item.role as "user" | "assistant",
+        content: item.content,
+      })),
       {
-        id: Date.now().toString(),
         content: userMessage,
         role: "user",
-        createdAt: new Date(),
       },
     ];
 
     console.log(conversation);
 
-    const response = await this.client.chat.completions.create({
+    const stream = await this.client.chat.completions.create({
       messages: imcomingConversation,
       temperature: 1.0,
       top_p: this.temperature,
       max_tokens: this.maxTokens,
       model: this.model,
+      stream: true,
     });
 
-    const assistantResponse = response.choices[0].message.content;
-
+    // const assistantResponse = stream.choices[0].message.content;
+    let assistantResponse: string = "";
+    for await (const chunk of stream) {
+      const deltaContent = chunk.choices[0]?.delta?.content || "";
+      assistantResponse += deltaContent;
+      console.log(deltaContent);
+      cb(deltaContent);
+    }
     const result: Message = {
       id: Date.now().toString(),
       content: assistantResponse,
