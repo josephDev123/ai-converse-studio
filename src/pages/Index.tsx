@@ -79,7 +79,7 @@ const ChatInterface = () => {
       <header className="flex items-center justify-between p-4 border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
           <MessageCircle className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-medium">ChatGPT SDK Practice</h1>
+          <h1 className="text-xl font-medium">Custom Chat AI</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -109,12 +109,12 @@ const ChatInterface = () => {
             <div className="glass-panel p-8 max-w-lg animate-fade-in">
               <BookOpen className="h-12 w-12 text-primary mx-auto mb-6" />
               <h2 className="text-2xl font-semibold mb-3">
-                Welcome to ChatGPT SDK Practice
+                Welcome to Custom Chat AI
               </h2>
               <p className="text-muted-foreground mb-6">
-                This is a simple interface to practice using the ChatGPT API.
-                Start by configuring your API key in the settings, then send a
-                message to begin chatting.
+                This is a simple interface to practice using your own ChatGPT
+                API key. Start by configuring your API key in the settings, then
+                send a message to begin chatting.
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Button
