@@ -1,5 +1,3 @@
-// This is a mock implementation of ChatGPT API SDK
-// In a real application, you would use the actual OpenAI SDK
 import OpenAI from "openai";
 export interface Message {
   id: string;
@@ -43,10 +41,6 @@ class ChatApi {
         apiKey: this.apiKey || options.apiKey,
       });
     }
-
-    // console.log("API Key:", this.apiKey);
-    // console.log("Client initialized:", !!this.client);
-    // console.log("Is initialized:", this.isInitialized);
   }
 
   initialize(apiKey: string): void {
@@ -62,6 +56,11 @@ class ChatApi {
 
   get isReady(): boolean {
     return this.isInitialized;
+  }
+
+  resetOnRefresh(value: boolean, apiKey: string) {
+    this.apiKey = apiKey;
+    this.isInitialized = value;
   }
 
   async sendMessage(

@@ -18,8 +18,9 @@ interface ChatContextType {
   isLoading: boolean;
   sendMessage: (content: string) => Promise<void>;
   setApiKey: (key: string) => void;
-  isApiKey: VoidFunction;
-  hasApiKey: boolean;
+  isApiKey: () => boolean;
+
+  // hasApiKey: boolean;
   clearMessages: () => void;
 }
 
@@ -182,7 +183,7 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({
         sendMessage,
         setApiKey,
         isApiKey,
-        hasApiKey: chatApi.isReady,
+        // hasApiKey: chatApi.isReady,
         clearMessages,
       }}
     >

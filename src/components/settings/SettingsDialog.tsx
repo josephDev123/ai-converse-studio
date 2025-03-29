@@ -20,7 +20,8 @@ interface SettingsDialogProps {
 
 const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
   const [apiKey, setApiKey] = useState("");
-  const { setApiKey: saveApiKey, hasApiKey } = useChat();
+  // const { setApiKey: saveApiKey, hasApiKey } = useChat();
+  const { setApiKey: saveApiKey, isApiKey } = useChat();
 
   useEffect(() => {
     // Try to load from localStorage when the dialog opens
@@ -78,7 +79,7 @@ const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
               </p>
             </div>
 
-            {!hasApiKey && apiKey === "" && (
+            {!isApiKey && apiKey === "" && (
               <div className="flex items-start gap-2 mt-2 p-2 bg-destructive/10 rounded-md text-sm text-destructive">
                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
                 <p>An API key is required to use the ChatGPT functionality.</p>

@@ -39,11 +39,14 @@ const ChatInterface = () => {
   } = useChat();
 
   const [showSettings, setShowSettings] = useState(false);
+  console.log(showSettings);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isApiKey) {
+    // console.log(isApiKey());
+
+    if (!isApiKey()) {
       setShowSettings(true);
     }
   }, [isApiKey]);
