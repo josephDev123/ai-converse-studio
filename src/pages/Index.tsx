@@ -1,21 +1,6 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  Suspense,
-  lazy,
-  useLayoutEffect,
-} from "react";
+import React, { useState, useEffect, useRef, Suspense, lazy } from "react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import {
-  Settings,
-  Plus,
-  RefreshCw,
-  BookOpen,
-  MessageCircle,
-  Send,
-} from "lucide-react";
+import { Settings, Plus, BookOpen, MessageCircle, Send } from "lucide-react";
 import { ChatProvider, useChat } from "@/context/ChatContext";
 import MessageItem from "@/components/chat/MessageItem";
 import ChatInput from "@/components/chat/ChatInput";
@@ -81,8 +66,10 @@ const ChatInterface = () => {
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b bg-background/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <MessageCircle className="h-6 w-6 text-primary" />
-          <h1 className="text-xl font-medium">Custom Chat AI</h1>
+          {/* <MessageCircle className="h-6 w-6 text-primary" />
+           */}
+          <img src="./logo.png" alt="logo" className="h-10 w-10 rounded-md " />
+          <h1 className="text-xl font-medium">AI-Chat-converse-studio</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -112,7 +99,7 @@ const ChatInterface = () => {
             <div className="glass-panel p-8 max-w-lg animate-fade-in">
               <BookOpen className="h-12 w-12 text-primary mx-auto mb-6" />
               <h2 className="text-2xl font-semibold mb-3">
-                Welcome to Custom Chat AI
+                Welcome to AI-Chat-converse-studio
               </h2>
               <p className="text-muted-foreground mb-6">
                 This is a simple interface to practice using your own ChatGPT
